@@ -73,7 +73,7 @@ with canvas(device) as draw:
     draw.text((10, 10), "Test in progress", fill="white")
     draw.text((40, 50), "0%", fill="blue")
 
-df = pd.DataFrame(columns=["Potential", "Current"])
+df = pd.DataFrame(columns=["Potential (V)", "Current (A)"])
 ca_done = False
 test_progress, test_size = 0, 300
 
@@ -98,7 +98,7 @@ while True:
 
         parsed_data = parse_data(incoming_data)
         if(parsed_data):
-            df = df._append({"Potential": parsed_data[0], "Current": parsed_data[1]}, ignore_index=True)
+            df = df._append({"Potential (V)": parsed_data[0], "Current (A)": parsed_data[1]}, ignore_index=True)
 
 with canvas(device) as draw:
     draw.rectangle(device.bounding_box, outline="white", fill="black")
@@ -112,14 +112,14 @@ test_result = False
 # Iterate over the dataframe and compare the current values to the baseline looking for peaks in difference
 for i, row in df.iterrows():
     # Find the two voltages that our's falls between
-    lower_voltage = baseline.loc[baseline['Potential'] <= row['Potential']].iloc[-1]
-    upper_voltage = baseline.loc[baseline['Potential'] >= row['Potential']].iloc[0]
+    lower_voltage = baseline.loc[baseline['Potential (V)'] <= row['Potential (V)']].iloc[-1]
+    upper_voltage = baseline.loc[baseline['Potential (V)'] >= row['Potential (V)']].iloc[0]
 
     # Interpolate the current values
-    interpolated_current = lower_voltage['Current'] + (upper_voltage['Current'] - lower_voltage['Current']) * (row['Potential'] - lower_voltage['Potential']) / (upper_voltage['Potential'] - lower_voltage['Potential'])
+    interpolated_current = lower_voltage['Current (A)'] + (upper_voltage['Current (A)'] - lower_voltage['Current (A)']) * (row['Potential (V)'] - lower_voltage['Potential (V)']) / (upper_voltage['Potential (V)'] - lower_voltage['Potential (V)'])
 
     # Compare the interpolated current to the measured current and if the difference is greater than 1.5 microamps print it
-    if abs(interpolated_current - row['Current']) > 1.5:
+    if abs(interpolated_current - row['Current (A)']) > 1.5:
         test_result = True
         break
 

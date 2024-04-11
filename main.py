@@ -71,7 +71,7 @@ for command in cv:
 with canvas(device) as draw:
     draw.rectangle(device.bounding_box, outline="white", fill="black")
     draw.text((10, 10), "Test in progress", fill="white")
-    draw.text((20, 10), "0%", fill="blue")
+    draw.text((40, 50), "0%", fill="blue")
 
 df = pd.DataFrame(columns=["Potential", "Current"])
 ca_done = False
@@ -94,7 +94,7 @@ while True:
                 with canvas(device) as draw:
                     draw.rectangle(device.bounding_box, outline="white", fill="black")
                     draw.text((10, 10), "Test in progress", fill="white")
-                    draw.text((20, 10), f"{test_progress/test_size*100}%", fill="blue")
+                    draw.text((40, 50), f"{round(test_progress/test_size*100, 4)}%", fill="blue")
 
         parsed_data = parse_data(incoming_data)
         if(parsed_data):
@@ -103,7 +103,7 @@ while True:
 with canvas(device) as draw:
     draw.rectangle(device.bounding_box, outline="white", fill="black")
     draw.text((10, 10), "Analyzing test results", fill="white")
-    draw.text((20, 10), "0%", fill="blue")
+    draw.text((40, 50), "0%", fill="blue")
 
 # Load baseline as a dataframe from baseline.csv
 baseline = pd.read_csv("baseline.csv")
@@ -128,7 +128,7 @@ for i, row in df.iterrows():
         with canvas(device) as draw:
             draw.rectangle(device.bounding_box, outline="white", fill="black")
             draw.text((10, 10), "Analyzing test results", fill="white")
-            draw.text((20, 10), f"{i/len(df)*100}%", fill="blue")
+            draw.text((40, 50), f"{round(i/len(df)*100, 4)}%", fill="blue")
 
 test_result_output = "Positive +" if test_result else "Negative -"
 
